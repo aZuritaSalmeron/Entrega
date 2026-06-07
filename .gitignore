@@ -1,0 +1,22 @@
+# === Entornos Virtuales y Dependencias de Python ===
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# === Almacenamiento de Datos Masivos y Modelos ===
+# Se excluyen el dataset y el índice denso por su volumen
+backend/data/*.parquet
+backend/data/*.faiss
+backend/data/ingredient_vocab.json
+
+# Exclusión de persistencia de modelos locales de la GPU
+.ollama/
+ollama_data/
+
+# === Configuración y Entornos de Desarrollo ===
+.env
+*.log
+.vscode/
+.idea/
+.DS_Store

@@ -1,0 +1,46 @@
+#version: '3.8'
+
+services:
+  # 1. El modelo de Lenguaje (La IA)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: tfm_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    entrypoint: /bin/sh -c "ollama serve & sleep 5 && ollama pull qwen2.5:7b && wait"  
+    # Opcional: Si tu entorno soporta GPU en Docker, descomenta estas líneas:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # 2. Tu API RAG
+  backend:
+    build: ./backend
+    container_name: tfm_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434  # Conecta Flask con el contenedor de Ollama
+      - DATA_DIR=/app/data
+    volumes:
+      - ./backend/data:/app/data  # Monta tu carpeta de datos para RAG
+    depends_on:
+      - ollama
+
+  # 3. La interfaz gráfica
+  frontend:
+    build: ./frontend
+    container_name: tfm_frontend
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+
+volumes:
+  ollama_data:
