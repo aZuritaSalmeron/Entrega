@@ -37,3 +37,12 @@ Para posibilitar la ejecución del motor de recuperación semántica, es un requ
    ```text
    entrega/backend/data/
 
+## 🚀 Instrucciones de Despliegue
+
+La solución está completamente automatizada. El modelo de lenguaje se descargará e inicializará de forma autónoma durante el primer arranque.
+
+1. **Clonar el repositorio e ingresar al directorio raíz:**
+   ```bash
+    git clone https://github.com/aZuritaSalmeron/Entrega.git
+    cd entrega
+    docker-compose up --build
